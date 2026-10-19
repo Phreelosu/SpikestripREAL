@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latestMajor</LangVersion>
+    <AssemblyName>Spikestrip2_0</AssemblyName>
+    <RootNamespace>Spikestrip2_0</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+    <!-- Decompiled code: silence noise that isn't actionable -->
+    <NoWarn>1701;1702;CS0618;CS0649;CS0169;CS0414;CS0108;CS0114;CS8321;NU1701</NoWarn>
+    <MSBuildWarningsAsMessages>$(MSBuildWarningsAsMessages);MSB3277</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RepoDir>$(MSBuildProjectDirectory)/../</RepoDir>
+    <BuildDir>$(RepoDir)build/</BuildDir>
+    <TSPackageDir>$(BuildDir)/package/</TSPackageDir>
+    <TSPackagePluginDir>$(TSPackageDir)/plugins/$(AssemblyName)/</TSPackagePluginDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.*">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="BepInEx.Core" Version="5.4.21" />
+    <PackageReference Include="MMHOOK.RoR2" Version="*" NoWarn="NU1701" />
+    <PackageReference Include="RiskOfRain2.GameLibs" Version="*-*" GeneratePathProperty="true" />
+    <PackageReference Include="RoR2BepInExPack" Version="*" />
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.45" GeneratePathProperty="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="R2API.ArtifactCode" Version="*" />
+    <PackageReference Include="R2API.Colors" Version="*" />
+    <PackageReference Include="R2API.CommandHelper" Version="*" />
+    <PackageReference Include="R2API.ContentManagement" Version="*" />
+    <PackageReference Include="R2API.Core" Version="*" />
+    <PackageReference Include="R2API.Deployable" Version="*" />
+    <PackageReference Include="R2API.Director" Version="*" />
+    <PackageReference Include="R2API.Dot" Version="*" />
+    <PackageReference Include="R2API.Elites" Version="*" />
+    <PackageReference Include="R2API.Items" Version="*" />
+    <PackageReference Include="R2API.Language" Version="*" />
+    <PackageReference Include="R2API.Networking" Version="*" />
+    <PackageReference Include="R2API.Orb" Version="*" />
+    <PackageReference Include="R2API.Prefab" Version="*" />
+    <PackageReference Include="R2API.RecalculateStats" Version="*" />
+    <PackageReference Include="R2API.Sound" Version="*" />
+    <PackageReference Include="R2API.TempVisualEffect" Version="*" />
+    <PackageReference Include="R2API.Unlockable" Version="*" />
+  </ItemGroup>
+
+  <!-- Content that was hard-disabled or cut in the original release (Arson + Gasolines, unfinished elites, dev tools). Kept for reference. -->
+  <ItemGroup>
+    <Compile Remove="Unfinished\**" />
+    <None Include="Unfinished\**" />
+  </ItemGroup>
+
+  <!-- Soft dependencies with no NuGet package -->
+  <ItemGroup>
+    <Reference Include="MysticsItemsPlugin">
+      <HintPath>..\..\..\mysticsitems\MysticsItems-SotS\bin\Release\netstandard2.1\MysticsItemsPlugin.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Asset bundles and soundbank are embedded so the mod ships as a single dll -->
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\*" Exclude="Assets\*.md;Assets\*.txt" LogicalName="Spikestrip2_0.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <Target Name="BuildTSPackage" AfterTargets="Build">
+    <MakeDir Directories="$(TSPackageDir);$(TSPackagePluginDir)" />
+    <Copy SourceFiles="$(RepoDir)manifest.json;$(RepoDir)README.md;$(RepoDir)CHANGELOG.md" DestinationFolder="$(TSPackageDir)" />
+    <Copy SourceFiles="$(BuildDir)icon.png" DestinationFolder="$(TSPackageDir)" ContinueOnError="true" />
+    <Delete Files="$(TSPackagePluginDir)/$(AssemblyName).dll;$(TSPackagePluginDir)/$(AssemblyName).pdb" ContinueOnError="true" />
+    <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(TSPackagePluginDir)" />
+    <ZipDirectory SourceDirectory="$(TSPackageDir)" DestinationFile="$(BuildDir)/$(AssemblyName).zip" Overwrite="true" />
+  </Target>
+
+</Project>
