@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{2D38333B-3297-44F9-9219-2855326BA007}" SchemaVersion="119">
+	<SoundBanks>
+		<WorkUnit Name="Spikestrip2" ID="{2D38333B-3297-44F9-9219-2855326BA007}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="Spikestrip2" ID="{5AD567DC-F2F1-45AB-A7DF-8E91CA4909AB}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_AragoniteElite_Spawn" ID="{4F90506B-DCBC-4F04-8F4C-358DC3077AFE}" WorkUnitID="{63365B3A-F169-4C6B-BFE1-EBDDD75A1C6E}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundBanks>
+</WwiseDocument>

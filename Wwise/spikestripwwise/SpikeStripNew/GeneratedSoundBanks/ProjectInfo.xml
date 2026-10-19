@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo>
+	<Project Name="SpikeStripNew" GUID="{5D07CA52-88DE-4D2B-ADE3-DEAF08A504E5}" Generator="2023.1.6.8555"/>
+	<CacheRoot>../.cache</CacheRoot>
+	<Platforms>
+		<Platform Name="Windows" GUID="{65EEDBC3-96DC-4ED2-8178-94CFFC3C2384}" BasePlatform="Windows" BasePlatformGUID="{6E0CB257-C6C8-4C5C-8366-2740DFC441EB}" Path="Windows"/>
+	</Platforms>
+	<Languages>
+		<Language Name="English(US)" Id="684519430" GUID="{55A4F44C-6126-4F96-95F6-83F16AA8B98C}" Default="true" UseAsStandIn="true"/>
+	</Languages>
+	<FileHash>{0C84581A-0AC8-E91B-3D22-0F3F1E45BC09}</FileHash>
+</ProjectInfo>

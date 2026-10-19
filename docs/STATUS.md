@@ -67,3 +67,6 @@ Nothing has been launched yet. Highest-risk areas:
    - `PurchaseInteraction.onPurchase` should be `onPurchaseDetailedServer`, and `onCharacterDeathGlobal` should be `onCharacterDeathServer`.
    - `StatHookEventArgs.cooldown*` fields have moved under `allSkills`. Asset `*Sprite`/`*Prefab` fields have become `*Reference`.
 3. `manifest.json`, README, and CHANGELOG still have template content. They need the Thunderstore dependencies: BepInExPack, HookGenPatcher, and the R2API submodules (ArtifactCode, Colors, CommandHelper, ContentManagement, Core, Deployable, Director, Dot, Elites, Items, Language, Networking, Orb, Prefab, RecalculateStats, Sound, TempVisualEffect, Unlockable).
+
+
+yes the summary to help my progress was made by ai, cry about it

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{63365B3A-F169-4C6B-BFE1-EBDDD75A1C6E}" SchemaVersion="119">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{63365B3A-F169-4C6B-BFE1-EBDDD75A1C6E}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_AragoniteElite_Spawn" ID="{4F90506B-DCBC-4F04-8F4C-358DC3077AFE}">
+					<ChildrenList>
+						<Action Name="" ID="{B0ED002F-DFE2-4077-B279-1E80BEDDFE0A}" ShortID="717659393">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="spawn" ID="{5668D279-1BCA-48CD-91E9-CF79365ECE61}" WorkUnitID="{76F8BAA1-169B-48C7-821E-B2BBE410E0A9}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>

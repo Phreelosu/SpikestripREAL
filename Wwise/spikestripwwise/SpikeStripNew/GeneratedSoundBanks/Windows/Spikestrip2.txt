@@ -1,0 +1,6 @@
+Event	ID	Name			Wwise Object Path	Notes
+	4286337573	Play_AragoniteElite_Spawn			\Default Work Unit\Play_AragoniteElite_Spawn	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	680218834	spawn	D:\Games\LostItems\secretspeedelite\spikestripwwise\SpikeStripNew\.cache\Windows\SFX\spawn_818F3B66.wem		\Actor-Mixer Hierarchy\Default Work Unit\spawn		481560
+
