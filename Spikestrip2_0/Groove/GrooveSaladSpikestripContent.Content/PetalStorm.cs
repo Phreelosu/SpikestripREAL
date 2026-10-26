@@ -177,7 +177,8 @@ public class PetalStorm : SpikestripAltSkillsBase<PetalStorm>
 		treebotPlantProjectilePrefab.GetComponent<ProjectileSimple>().desiredForwardSpeed = 80f;
 		treebotPlantProjectilePrefab.GetComponent<ProjectileController>().startSound = "";
 		treebotPlantProjectilePrefab.GetComponent<ProjectileController>().flightSoundLoop = null;
-		treebotPlantProjectilePrefab.GetComponent<ProjectileController>().ghostPrefab = treebotPlantGhostPrefab;
+		SpikestripUtil.SetProjectileGhost(treebotPlantProjectilePrefab.GetComponent<ProjectileController>(), treebotPlantGhostPrefab);
+		treebotPlantProjectilePrefab.GetComponent<ProjectileDamage>().damageType.damageSource = DamageSource.Primary;
 		treebotPlantProjectilePrefab.AddComponent<ProjectileOverlapAttack>();
 		ProjectileOverlapAttack component2 = treebotPlantProjectilePrefab.GetComponent<ProjectileOverlapAttack>();
 		component2.damageCoefficient = 1f;

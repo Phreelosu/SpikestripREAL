@@ -52,7 +52,7 @@
     <PackageReference Include="R2API.Unlockable" Version="*" />
   </ItemGroup>
 
-  <!-- Content that was hard-disabled or cut in the original release (Arson + Gasolines, unfinished elites, dev tools). Kept for reference. -->
+  <!-- Content that was hard-disabled or cut in the original release (unfinished elites, dev tools, ...). Kept for reference. -->
   <ItemGroup>
     <Compile Remove="Unfinished\**" />
     <None Include="Unfinished\**" />
@@ -64,11 +64,16 @@
       <HintPath>..\..\..\mysticsitems\MysticsItems-SotS\bin\Release\netstandard2.1\MysticsItemsPlugin.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="LookingGlass">
+      <HintPath>libs\LookingGlass.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
-  <!-- Asset bundles and soundbank are embedded so the mod ships as a single dll -->
+  <!-- Asset bundles and soundbank ship as files next to the dll (loaded with AssetBundle.LoadFromFile, not embedded) -->
   <ItemGroup>
-    <EmbeddedResource Include="Assets\*" Exclude="Assets\*.md;Assets\*.txt" LogicalName="Spikestrip2_0.%(Filename)%(Extension)" />
+    <ModAsset Include="Assets\*" Exclude="Assets\*.md;Assets\*.txt" />
+    <None Include="@(ModAsset)" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)" />
   </ItemGroup>
 
   <Target Name="BuildTSPackage" AfterTargets="Build">
@@ -77,6 +82,7 @@
     <Copy SourceFiles="$(BuildDir)icon.png" DestinationFolder="$(TSPackageDir)" ContinueOnError="true" />
     <Delete Files="$(TSPackagePluginDir)/$(AssemblyName).dll;$(TSPackagePluginDir)/$(AssemblyName).pdb" ContinueOnError="true" />
     <Copy SourceFiles="$(OutDir)$(AssemblyName).dll" DestinationFolder="$(TSPackagePluginDir)" />
+    <Copy SourceFiles="@(ModAsset)" DestinationFolder="$(TSPackagePluginDir)" SkipUnchangedFiles="true" />
     <ZipDirectory SourceDirectory="$(TSPackageDir)" DestinationFile="$(BuildDir)/$(AssemblyName).zip" Overwrite="true" />
   </Target>
 

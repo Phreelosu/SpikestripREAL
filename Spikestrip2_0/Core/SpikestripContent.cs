@@ -29,9 +29,9 @@ namespace Spikestrip2_0.Core
     public static void Init()
     {
       Config = new ConfigFile(System.IO.Path.Combine(Paths.ConfigPath, "Spikestrip 2.0.cfg"), true);
-      GrooveBundle = Main.LoadEmbeddedBundle("groovesaladspikestripcontentassets");
-      NoopBundle = Main.LoadEmbeddedBundle("Noopspikestripcontentpack.bundle");
-      UnsharedBundle = Main.LoadEmbeddedBundle("grooveunsharedutilsassets");
+      GrooveBundle = Main.LoadBundle("groovesaladspikestripcontentassets");
+      NoopBundle = Main.LoadBundle("Noopspikestripcontentpack.bundle");
+      UnsharedBundle = Main.LoadBundle("grooveunsharedutilsassets");
       BuffBehaviours.Init();
       CreateExpansionDef();
       PlasmaCoreSpikestripContent.Core.PlasmaCorePlugin.Init();

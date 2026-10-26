@@ -111,7 +111,7 @@ public class InfinityCodex : ItemBase<InfinityCodex>
 	public override void AssignItemModels()
 	{
 		Material value = LegacyResourcesAPI.Load<GameObject>("prefabs/networkedobjects/LogPickup").GetComponentInChildren<MeshRenderer>().sharedMaterials[1];
-		Material material = LegacyResourcesAPI.Load<GameObject>("prefabs/characterbodies/ArtifactShellBody").transform.Find("ModelBase/ArtifactShellModel").GetComponent<MeshRenderer>().sharedMaterials[0];
+		Material material = SpikestripUtil.artifactShellDistortionMaterial;
 		ItemPickupModel = SpikestripUtil.UpdateGameObjectShader(SpikestripContent.GrooveBundle.LoadAsset<GameObject>("InfinityCodex.prefab"));
 		Transform transform = ItemPickupModel.transform.Find("Main");
 		transform.SetAsFirstSibling();

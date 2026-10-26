@@ -141,6 +141,7 @@ public class LoaderVoidBeam : SpikestripVoidAltSkillsBase<LoaderVoidBeam>
 				bulletAttack.aimVector = beamRay.direction;
 				bulletAttack.minSpread = 0f;
 				bulletAttack.damage = damageCoefficient * damageStat;
+				bulletAttack.damageType = DamageSource.Secondary;
 				bulletAttack.force = 200f;
 				bulletAttack.muzzleName = "MuzzleLeft";
 				bulletAttack.hitEffectPrefab = impactVFXPrefab;
@@ -190,6 +191,7 @@ public class LoaderVoidBeam : SpikestripVoidAltSkillsBase<LoaderVoidBeam>
 				bulletAttack.aimVector = aimRay.direction;
 				bulletAttack.minSpread = 0f;
 				bulletAttack.damage = finalBlastDamageCoefficient * damageStat;
+				bulletAttack.damageType = DamageSource.Secondary;
 				bulletAttack.force = 1000f;
 				bulletAttack.muzzleName = "MuzzleLeft";
 				bulletAttack.hitEffectPrefab = null;

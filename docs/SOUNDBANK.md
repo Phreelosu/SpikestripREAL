@@ -17,7 +17,7 @@ The unused event is most likely the pre-1.1.2 version of the spawn sound (the ch
 2. In a Wwise 2024.1 project, import the `.wav` as a Sound SFX and set **Voice Volume to -9**. Leave it on the Master Audio Bus.
 3. Create the event **`Play_AragoniteElite_Spawn`** (exact name, since the ID is the FNV hash of the name) with a single *Play* action targeting that sound.
 4. Make a soundbank named **`Spikestrip2`** containing that event, and generate it for Windows.
-5. Copy the generated `Spikestrip2.bnk` to `Spikestrip2_0/Assets/Spikestrip2.bnk`. It's embedded automatically, and `Main.LoadSoundBank` registers it through R2API's SoundAPI. Don't ship `Init.bnk`, the game provides its own.
+5. Copy the generated `Spikestrip2.bnk` to `Spikestrip2_0/Assets/Spikestrip2.bnk`. The build copies it next to the dll in the package, and `Main.LoadSoundBank` registers it by path through R2API's SoundAPI. Don't ship `Init.bnk`, the game provides its own.
 
 To check a bank's version: bytes 8-11 of the file (little-endian u32) should read `150`.
 

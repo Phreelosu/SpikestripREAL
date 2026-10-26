@@ -179,7 +179,7 @@ public class HealOnSkillUse : ItemBase<HealOnSkillUse>
 		component.material.DisableKeyword("FLOWMAP");
 		Transform transform2 = ItemPickupModel.transform.Find("Glass");
 		MeshRenderer component2 = transform2.GetComponent<MeshRenderer>();
-		Material material2 = LegacyResourcesAPI.Load<GameObject>("prefabs/characterbodies/ArtifactShellBody").transform.Find("ModelBase/ArtifactShellModel").GetComponent<MeshRenderer>().sharedMaterials[0];
+		Material material2 = SpikestripUtil.artifactShellDistortionMaterial;
 		component2.SetSharedMaterials(new Material[2]
 		{
 			SpikestripUtil.infusionGlassMaterial,

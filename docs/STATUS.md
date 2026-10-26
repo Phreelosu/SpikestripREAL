@@ -12,7 +12,7 @@ Goal: one `Spikestrip2_0.dll`, built from the ILSpy'd sources of the 4 original 
   - `OverlayMaterials` and `BuffBehaviours`: the only two hooks R2API has no module for.
 - `Groove/`, `Plasma/`, `Noop/`: content sources, with the **original namespaces kept** (Plasma's bundle binds by namespace and class name, and ZetAspects reflects into content classes). `Groove/GrooveSaladSpikestripContent` now only holds the alt-skill templates and `LockSkillFromExpansion`.
 - `Unfinished/`: content that was hard-disabled or cut in the original release (Death/Radiant/Yeah elites, Nullifier Corpse, Void Microbot and leeches, Lantern, Trailer Mode, and the item icon renderer). None of it has its own icons (the elites borrow Warped's). Arsonist's Satchel and its 4 Gasolines had full assets and were ported out of here into `Groove/`. It's excluded from the build with `<Compile Remove>`, like Aetherium does.
-- `Assets/`: asset bundles and `Spikestrip2.bnk` (Wwise 2024.1, v150), all embedded. `plasmacorespikestripcontentpack.bundle` is **retargeted** to `Spikestrip2_0.dll` and `R2API.ArtifactCode.dll` (see `tools/BundleTool`).
+- `Assets/`: asset bundles and `Spikestrip2.bnk` (Wwise 2024.1, v150). They ship as separate files next to the dll in `plugins/Spikestrip2_0/` and load with `AssetBundle.LoadFromFile` / `SoundBanks.Add(path)` (they used to be embedded resources, which kept a managed copy of every bundle in memory). `plasmacorespikestripcontentpack.bundle` is **retargeted** to `Spikestrip2_0.dll` and `R2API.ArtifactCode.dll` (see `tools/BundleTool`).
 
 ## Done
 
@@ -66,7 +66,11 @@ Nothing has been launched yet. Highest-risk areas:
    - `GenericPickupController.pickupIndex` should be `pickupState`, and `CreatePickupDroplet(PickupIndex)` should use the `UniquePickup` overload.
    - `PurchaseInteraction.onPurchase` should be `onPurchaseDetailedServer`, and `onCharacterDeathGlobal` should be `onCharacterDeathServer`.
    - `StatHookEventArgs.cooldown*` fields have moved under `allSkills`. Asset `*Sprite`/`*Prefab` fields have become `*Reference`.
-3. `manifest.json`, README, and CHANGELOG still have template content. They need the Thunderstore dependencies: BepInExPack, HookGenPatcher, and the R2API submodules (ArtifactCode, Colors, CommandHelper, ContentManagement, Core, Deployable, Director, Dot, Elites, Items, Language, Networking, Orb, Prefab, RecalculateStats, Sound, TempVisualEffect, Unlockable).
+3. ~~`manifest.json`, README, and CHANGELOG still have template content.~~ Done in 1.2.2: real manifest with every R2API module (+ HookGenPatcher, RoR2BepInExPack) at the resolved package versions, and every module also declared with `[BepInDependency]` in `Main.cs`. README lists all content.
+
+### 1.2.2 fixes (for reference)
+- `DirectorUtil.AddInteractable` (all-stages case) no longer uses `DirectorAPI.Helpers.AddNewInteractable`, which creates missing categories. Soulbound Threshold (`champrush`) has an empty `dccsChampRushInteractables`, so it got a "Chests" category holding only the 5-credit Lunar Vault. Cards are now only added to categories a stage already has.
+- Smouldering Comet's Blue Lemurian was invisible, then T-posing and not blue. `LemurianMesh` has no mesh/materials in the prefab, and `mdlLemurian`'s Animator has no controller/avatar: `ModelSkinController` loads all of them at runtime (`_animatorControllerAddress`, `_avatarAddress`, skin params). The port destroys the skin controller (so it can't reset the blue material), and `SpikestripUtil.BakeDefaultSkin` destroys it too. `BakeDefaultSkin` now also bakes the Animator's controller and avatar (read by reflection from the skin controller's `_animatorControllerAddress` / `_avatarAddress`) before removing it. **Rule: whenever a vanilla `ModelSkinController` is removed, use `BakeDefaultSkin` so mesh, materials, controller and avatar are all baked in.**
 
 
 yes the summary to help my progress was made by ai, cry about it

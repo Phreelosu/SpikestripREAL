@@ -55,6 +55,7 @@ public class FireWeave : BaseSkillState, SteppedSkillDef.IStepSetter
 			bulletAttack.minSpread = 0f;
 			bulletAttack.maxSpread = base.characterBody.spreadBloomAngle;
 			bulletAttack.damage = damageCoefficient * damageStat;
+			bulletAttack.damageType = DamageSource.Primary;
 			bulletAttack.force = force;
 			bulletAttack.tracerEffectPrefab = Weave.scriptableObject.Effects[0];
 			bulletAttack.muzzleName = targetMuzzle;

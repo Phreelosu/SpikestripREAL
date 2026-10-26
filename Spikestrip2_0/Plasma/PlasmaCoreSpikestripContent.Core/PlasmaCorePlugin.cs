@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using BepInEx;
@@ -52,7 +52,7 @@ public static class PlasmaCorePlugin
 		NetworkingAPI.RegisterMessageType<IFSTargetConfirmRequestNetworkMessage>();
 		NetworkingAPI.RegisterMessageType<IFSACtivateEquipmentNetworkMessage>();
 		NetworkingAPI.RegisterMessageType<ApplyWeaveDebuffNetworkMessage>();
-		bundle = Spikestrip2_0.Main.LoadEmbeddedBundle("plasmacorespikestripcontentpack.bundle");
+		bundle = Spikestrip2_0.Main.LoadBundle("plasmacorespikestripcontentpack.bundle");
 		freezeEffectIFS = bundle.LoadAsset<GameObject>("FreezeEffect");
 		ContentAddition.AddEffect(freezeEffectIFS);
 		crosshairIFSActive = bundle.LoadAsset<GameObject>("IFSIndicatorActive");

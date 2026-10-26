@@ -73,6 +73,11 @@ public class MageChokeArea : SpikestripVoidAltSkillsBase<MageChokeArea>
 		{
 			ContentAddition.AddProjectile(gameObject);
 			PlasmaUtils.RegisterNetworkPrefab(gameObject);
+			// Choke and its Void Bolts override both sit on the secondary
+			if (gameObject.TryGetComponent(out ProjectileDamage projectileDamage))
+			{
+				projectileDamage.damageType.damageSource = DamageSource.Secondary;
+			}
 		}
 		BuffDef[] buffs = scriptableObject.buffs;
 		foreach (BuffDef item2 in buffs)

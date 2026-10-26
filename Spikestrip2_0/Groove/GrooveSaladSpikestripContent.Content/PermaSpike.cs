@@ -240,7 +240,7 @@ public class PermaSpike : ItemBase<PermaSpike>
 		ProjectileController component4 = projectilePrefab.GetComponent<ProjectileController>();
 		component4.flightSoundLoop = null;
 		component4.startSound = "";
-		component4.ghostPrefab = null;
+		SpikestripUtil.SetProjectileGhost(component4, null);
 		component4.procCoefficient = 0.2f;
 		ProjectileSimple component5 = projectilePrefab.GetComponent<ProjectileSimple>();
 		component5.lifetime = 999f;

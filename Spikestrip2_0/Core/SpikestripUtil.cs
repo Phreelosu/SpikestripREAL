@@ -16,6 +16,9 @@ namespace Spikestrip2_0.Core
 
     public static Material wispGlassDistortionMaterial = LegacyResourcesAPI.Load<GameObject>("prefabs/pickupmodels/PickupWilloWisp").transform.Find("mdlGlassJar/GlassJar").GetComponent<MeshRenderer>().material;
 
+    // matArtifactShellDistortion. ArtifactShellModel's prefab renderer has no materials anymore (the skin supplies them).
+    public static Material artifactShellDistortionMaterial = AddressablesLoad<Material>("2680f10508f99124abe819f13d14a4ed");
+
     public static GameObject nullModel = LegacyResourcesAPI.Load<GameObject>("Prefabs/NullModel");
 
     public static GameObject UpdateGameObjectShader(GameObject originalModel, bool dither = true)
@@ -89,6 +92,14 @@ namespace Spikestrip2_0.Core
     public static GameObject EmptyPrefab(string name, bool registerNetwork = false)
     {
       return PrefabAPI.InstantiateClone(new GameObject(name), name, registerNetwork);
+    }
+
+    // ProjectileController prefers ghostPrefabAddress over ghostPrefab when the address is valid, so cloned
+    // vanilla projectiles keep the original ghost unless the address is cleared too. Pass null for no ghost.
+    public static void SetProjectileGhost(RoR2.Projectile.ProjectileController projectileController, GameObject ghostPrefab)
+    {
+      projectileController.ghostPrefab = ghostPrefab;
+      projectileController.ghostPrefabAddress = new AssetReferenceT<GameObject>("");
     }
 
     public static int StackScaling(int baseValue, int stackValue, int stack)
@@ -188,11 +199,42 @@ namespace Spikestrip2_0.Core
           }
         }
       }
+      // Model Animators ship without a controller and avatar too: the ModelSkinController loads them in Awake. It's
+      // removed below, so bake them in as well, or the model T-poses.
+      Animator clonedAnimator = clonedModel.GetComponent<Animator>();
+      if (controller && clonedAnimator)
+      {
+        if (!clonedAnimator.runtimeAnimatorController)
+        {
+          clonedAnimator.runtimeAnimatorController = LoadSkinControllerAsset<RuntimeAnimatorController>(controller, "_animatorControllerAddress", "_animatorController");
+        }
+        if (!clonedAnimator.avatar)
+        {
+          clonedAnimator.avatar = LoadSkinControllerAsset<Avatar>(controller, "_avatarAddress", "_avatar");
+        }
+      }
       ModelSkinController clonedController = clonedModel.GetComponent<ModelSkinController>();
       if (clonedController)
       {
         Object.DestroyImmediate(clonedController);
       }
+    }
+
+    // Reads the ModelSkinController's (internal) address field without going through its animatorControllerRef /
+    // avatarRef properties, which would start a load on the vanilla prefab. The handle is never released on purpose:
+    // the baked prefab keeps referencing the asset.
+    private static T LoadSkinControllerAsset<T>(ModelSkinController controller, string addressField, string directField) where T : Object
+    {
+      const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic;
+      if (typeof(ModelSkinController).GetField(addressField, flags)?.GetValue(controller) is AssetReferenceT<T> address && address.RuntimeKeyIsValid())
+      {
+        T asset = Addressables.LoadAssetAsync<T>(address.RuntimeKey).WaitForCompletion();
+        if (asset)
+        {
+          return asset;
+        }
+      }
+      return typeof(ModelSkinController).GetField(directField, flags)?.GetValue(controller) as T;
     }
 
     private static Component CloneCounterpart(GameObject originalModel, GameObject clonedModel, Component original)

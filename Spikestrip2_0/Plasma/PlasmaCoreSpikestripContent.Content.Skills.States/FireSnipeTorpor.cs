@@ -67,6 +67,8 @@ public class FireSnipeTorpor : BaseFireSnipe
 	public override void ModifyBullet(BulletAttack bulletAttack)
 	{
 		bulletAttack.sniper = false;
+		// Vanilla's scoped shot (FireSnipeHeavy) counts as the secondary
+		bulletAttack.damageType.damageSource = DamageSource.Secondary;
 		bulletAttack.isCrit = base.characterBody.RollCrit();
 		bulletAttack.falloffModel = BulletAttack.FalloffModel.None;
 		EntityStateMachine entityStateMachine = EntityStateMachine.FindByCustomName(base.gameObject, "Reload");

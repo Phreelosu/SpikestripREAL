@@ -34,8 +34,12 @@ switch (args[0])
         Tree(args[1], args[2]);
         return 0;
     case "field":
-        // field <bundle> <fieldName> : prints every string value of that field, with the owning asset's name
+        // field <bundle> <fieldName> : prints every value of that field, with the owning asset's (or GameObject's) name
         Field(args[1], args[2]);
+        return 0;
+    case "mat":
+        // mat <bundle> <materialName> : shader, keywords and saved properties of a material
+        Mat(args[1], args[2]);
         return 0;
     case "names":
         // names <bundle> : every loadable asset path in the bundle (AssetBundle.m_Container)
@@ -249,6 +253,13 @@ void Field(string path, string fieldName)
             try { field = manager.GetBaseField(assets, mb); }
             catch { continue; }
             string owner = field["m_Name"].IsDummy ? mb.PathId.ToString() : field["m_Name"].AsString;
+            // Components have no name of their own: use their GameObject's
+            if (string.IsNullOrEmpty(owner) && !field["m_GameObject"].IsDummy)
+            {
+                var go = assets.file.GetAssetInfo(field["m_GameObject"]["m_PathID"].AsLong);
+                if (go != null)
+                    owner = manager.GetBaseField(assets, go)["m_Name"].AsString;
+            }
             Walk(field, owner, "");
         }
     }
@@ -257,11 +268,44 @@ void Field(string path, string fieldName)
     void Walk(AssetTypeValueField f, string owner, string prefix)
     {
         string here = prefix.Length > 0 ? prefix + "." + f.FieldName : f.FieldName;
-        if (f.FieldName == fieldName && f.Value != null && f.Value.ValueType == AssetValueType.String)
-            Console.WriteLine($"{owner}: {here} = \"{f.AsString}\"");
+        if (f.FieldName == fieldName && f.Value != null)
+            Console.WriteLine(f.Value.ValueType == AssetValueType.String
+                ? $"{owner}: {here} = \"{f.AsString}\""
+                : $"{owner}: {here} = {f.Value.AsObject}");
         foreach (var child in f.Children)
             Walk(child, owner, here);
     }
+}
+
+// mat <bundle> <materialName> : shader, keywords and saved float/color/texture properties of a material
+void Mat(string path, string materialName)
+{
+    var bundle = manager.LoadBundleFile(path, true);
+    for (int i = 0; i < bundle.file.BlockAndDirInfo.DirectoryInfos.Count; i++)
+    {
+        if (!bundle.file.IsAssetsFile(i))
+            continue;
+        var assets = manager.LoadAssetsFileFromBundle(bundle, i, false);
+        foreach (var info in assets.file.GetAssetsOfType(AssetClassID.Material))
+        {
+            var m = manager.GetBaseField(assets, info);
+            if (!string.Equals(m["m_Name"].AsString, materialName, StringComparison.OrdinalIgnoreCase))
+                continue;
+            Console.WriteLine($"{m["m_Name"].AsString}: shader {m["m_Shader"]["m_FileID"].AsInt}:{m["m_Shader"]["m_PathID"].AsLong}");
+            if (!m["m_ValidKeywords"].IsDummy)
+                Console.WriteLine("  keywords: " + string.Join(" ", m["m_ValidKeywords"]["Array"].Children.Select(k => k.AsString)));
+            if (!m["m_ShaderKeywords"].IsDummy)
+                Console.WriteLine("  keywords: " + m["m_ShaderKeywords"].AsString);
+            var props = m["m_SavedProperties"];
+            foreach (var f in props["m_Floats"]["Array"].Children)
+                Console.WriteLine($"  {f["first"].AsString} = {f["second"].AsFloat}");
+            foreach (var c in props["m_Colors"]["Array"].Children)
+                Console.WriteLine($"  {c["first"].AsString} = ({c["second"]["r"].AsFloat}, {c["second"]["g"].AsFloat}, {c["second"]["b"].AsFloat}, {c["second"]["a"].AsFloat})");
+            foreach (var t in props["m_TexEnvs"]["Array"].Children)
+                Console.WriteLine($"  {t["first"].AsString} = tex {t["second"]["m_Texture"]["m_FileID"].AsInt}:{t["second"]["m_Texture"]["m_PathID"].AsLong}");
+        }
+    }
+    manager.UnloadAll();
 }
 
 // Prints the transform hierarchy (with component types) under every root GameObject with the given name.
@@ -325,6 +369,16 @@ void PrintNode(AssetsFileInstance assets, AssetTypeValueField goField, int depth
         {
             var mesh = manager.GetBaseField(assets, info)["m_Mesh"];
             comps.Add($"{type}(mesh {mesh["m_FileID"].AsInt}:{mesh["m_PathID"].AsLong})");
+            if (type == AssetClassID.SkinnedMeshRenderer)
+            {
+                var smr = manager.GetBaseField(assets, info);
+                comps[^1] += $"(bones {smr["m_Bones"]["Array"].Children.Count}, root {smr["m_RootBone"]["m_PathID"].AsLong})";
+            }
+        }
+        else if (type == AssetClassID.Animator)
+        {
+            var anim = manager.GetBaseField(assets, info);
+            comps.Add($"Animator(controller {anim["m_Controller"]["m_FileID"].AsInt}:{anim["m_Controller"]["m_PathID"].AsLong}, avatar {anim["m_Avatar"]["m_FileID"].AsInt}:{anim["m_Avatar"]["m_PathID"].AsLong})");
         }
         else
             comps.Add(type.ToString());

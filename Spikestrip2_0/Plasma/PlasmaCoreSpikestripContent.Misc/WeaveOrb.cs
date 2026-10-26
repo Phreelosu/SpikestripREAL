@@ -43,7 +43,7 @@ public class WeaveOrb : Orb
 				force = Vector3.zero,
 				position = target.transform.position,
 				procCoefficient = 1f,
-				damageType = DamageType.Generic,
+				damageType = DamageSource.Primary,
 				damageColorIndex = DamageColorIndex.Void
 			};
 			target.healthComponent.TakeDamage(damageInfo);

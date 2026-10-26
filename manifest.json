@@ -1,10 +1,30 @@
 ﻿{
-	"name": "NewMod",
-	"version_number": "1.0.0",
-	"website_url": "",
-	"description": "Template",
-	"dependencies": [
-		"bbepis-BepInExPack-5.4.2117",
-		"RiskofThunder-HookGenPatcher-1.2.4"
-	]
+  "name": "Spikestrip2_0",
+  "version_number": "1.2.2",
+  "website_url": "https://github.com/Phreelosu/SpikestripREAL",
+  "description": "A content mod that should not exist ONCE MORE. New items, monsters, skills, and more!",
+  "dependencies": [
+    "bbepis-BepInExPack-5.4.2122",
+    "RiskofThunder-HookGenPatcher-1.2.9",
+    "RiskofThunder-RoR2BepInExPack-1.47.0",
+    "RiskofThunder-R2API_Core-5.3.0",
+    "RiskofThunder-R2API_Addressables-1.1.3",
+    "RiskofThunder-R2API_ArtifactCode-1.0.1",
+    "RiskofThunder-R2API_Colors-1.0.3",
+    "RiskofThunder-R2API_CommandHelper-1.0.2",
+    "RiskofThunder-R2API_ContentManagement-1.1.0",
+    "RiskofThunder-R2API_Deployable-1.0.1",
+    "RiskofThunder-R2API_Director-3.1.2",
+    "RiskofThunder-R2API_Dot-1.1.3",
+    "RiskofThunder-R2API_Elites-1.1.3",
+    "RiskofThunder-R2API_Items-1.0.8",
+    "RiskofThunder-R2API_Language-1.1.0",
+    "RiskofThunder-R2API_Networking-1.0.4",
+    "RiskofThunder-R2API_Orb-1.0.1",
+    "RiskofThunder-R2API_Prefab-1.1.1",
+    "RiskofThunder-R2API_RecalculateStats-1.6.6",
+    "RiskofThunder-R2API_Sound-1.0.3",
+    "RiskofThunder-R2API_TempVisualEffect-1.0.3",
+    "RiskofThunder-R2API_Unlockable-1.0.2"
+  ]
 }

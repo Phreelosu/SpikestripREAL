@@ -187,8 +187,9 @@ public class EMPCharge : SpikestripAltSkillsBase<EMPCharge>
 		component2.startColor = Color.white;
 		component2.material = material2;
 		megaTazerProjectilePrefab = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("prefabs/projectiles/CommandoGrenadeProjectile"), "MegaTazerProjectilePrefab", true);
-		megaTazerProjectilePrefab.GetComponent<ProjectileDamage>().damageType = DamageType.Shock5s;
-		megaTazerProjectilePrefab.GetComponent<ProjectileController>().ghostPrefab = megaTazerGhostPrefab;
+		// Same combo as vanilla Captain's Power Tazer
+		megaTazerProjectilePrefab.GetComponent<ProjectileDamage>().damageType = new DamageTypeCombo(DamageType.Shock5s, DamageTypeExtended.Electrical, DamageSource.Secondary);
+		SpikestripUtil.SetProjectileGhost(megaTazerProjectilePrefab.GetComponent<ProjectileController>(), megaTazerGhostPrefab);
 		ProjectileImpactExplosion component3 = megaTazerProjectilePrefab.GetComponent<ProjectileImpactExplosion>();
 		component3.blastAttackerFiltering = AttackerFiltering.AlwaysHit;
 		component3.blastDamageCoefficient = 1f;

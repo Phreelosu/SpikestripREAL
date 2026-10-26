@@ -77,7 +77,7 @@ public class ChokeOrb : Orb
 					force = vector.normalized * (Mathf.Min(vector.magnitude, 20f) * baseForce * (num2 * massForceBonusMult)),
 					position = target.transform.position,
 					procCoefficient = 1f,
-					damageType = DamageType.Generic,
+					damageType = DamageSource.Secondary,
 					damageColorIndex = DamageColorIndex.Void
 				};
 				target.healthComponent.TakeDamage(damageInfo);

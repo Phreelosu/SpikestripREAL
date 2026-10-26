@@ -128,9 +128,13 @@ public class BlueLemurian : ItemBase<BlueLemurian>
 		blueLemurianBodyObject = PrefabAPI.InstantiateClone(LegacyResourcesAPI.Load<GameObject>("prefabs/characterbodies/LemurianBody"), "BlueLemurianBody", true);
 		blueLemurianBodyObject.AddComponent<BlueLemurianController>();
 		ModelLocator component = blueLemurianBodyObject.GetComponent<ModelLocator>();
+		// The Lemurian's mesh, material, animator controller and avatar now come from its ModelSkinController at runtime.
+		// Bake them into the prefab (which also removes the skin controller, so it can't swap the blue material back).
+		GameObject lemurianModel = LegacyResourcesAPI.Load<GameObject>("prefabs/characterbodies/LemurianBody").GetComponent<ModelLocator>().modelTransform.gameObject;
+		SpikestripUtil.BakeDefaultSkin(lemurianModel, component.modelTransform.gameObject);
 		Transform transform = component.modelTransform.Find("LemurianMesh");
 		SkinnedMeshRenderer component2 = transform.GetComponent<SkinnedMeshRenderer>();
-		matBlueLemurian = UnityEngine.Object.Instantiate(component2.material);
+		matBlueLemurian = UnityEngine.Object.Instantiate(component2.sharedMaterial);
 		matBlueLemurian.color = SpikestripUtil.ColorRGB(180f, 233f, 255f);
 		matBlueLemurian.SetTexture("_EmTex", SpikestripContent.GrooveBundle.LoadAsset<Texture>("texBlueLemurianEmission.png"));
 		CharacterModel component3 = component.modelTransform.GetComponent<CharacterModel>();
@@ -144,8 +148,7 @@ public class BlueLemurian : ItemBase<BlueLemurian>
 				ignoreOverlays = false
 			}
 		};
-		UnityEngine.Object.DestroyImmediate(component.modelTransform.GetComponent<ModelSkinController>());
-		component2.material = matBlueLemurian;
+		component2.sharedMaterial = matBlueLemurian;
 		CharacterBody component4 = blueLemurianBodyObject.GetComponent<CharacterBody>();
 		component4.baseMoveSpeed = 12f;
 		component4.baseRegen = 1.5f;
